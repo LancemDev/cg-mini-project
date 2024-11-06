@@ -17,7 +17,29 @@ block_textures = {
     "stone": load_texture("assets/textures/wallStone.png"),
     "bedrock": load_texture("assets/textures/stone07.png")
 }
+# Define block class
+class Block(Entity):
+    def _init_(self, position, block_type):
+        super()._init_(
+            position=position,
+            model="assets/models/block_model",
+            scale=1,
+            origin_y=-0.5,
+            texture=block_textures.get(block_type),
+            collider="box"
+        )
+        self.block_type = block_type
 
+# Create block in hand
+mini_block = Entity(
+    parent=camera,
+    model="assets/models/block_model",
+    scale=0.2,
+    texture=block_textures.get(selected_block),
+    position=(0.35, -0.25, 0.5),
+    rotation=(-15, -30, -5)
+)
+Commit Message: "Create Block class for terrain blocks and add in-hand block representation."# Define block class
 # Initialize player
 player = FirstPersonController(
     mouse_sensitivity=Vec2(100, 100),
