@@ -45,6 +45,51 @@ player = FirstPersonController(
     mouse_sensitivity=Vec2(100, 100),
     position=(0, 5, 0)
 )
+# Create terrain
+min_height = -5
+for x in range(-10, 10):
+    for z in range(-10, 10):
+        height = noise([x * 0.02, z * 0.02])
+        height = math.floor(height * 7.5)
+        for y in range(height, min_height - 1, -1):
+            if y == min_height:
+                block = Block((x, y + min_height, z), "bedrock")
+            elif y == height:
+                block = Block((x, y + min_height, z), "grass")
+            elif height - y > 2:
+                block = Block((x, y + min_height, z), "stone")
+            else:
+                block = Block((x, y + min_height, z), "dirt")
+
+# Add a rotating moon with glow effect
+moon = Entity(
+    model="sphere",
+    scale=5,
+    position=(0, 50, 0),
+    color=color.rgb(200, 200, 255)
+)
+
+# Moon glow effect
+moon_glow = Entity(
+    model="sphere",
+    scale=6,
+    position=(0, 50, 0),
+    color=color.rgba(255, 255, 255, 50)  # Soft semi-transparent white
+)
+
+moon_rotation_speed = 0.1
+
+# Stars in the sky
+stars = []
+for _ in range(50):
+    star = Entity(
+        model="sphere",
+        scale=0.1,
+        position=(random.uniform(-50, 50), random.uniform(30, 60), random.uniform(-50, 50)),
+        color=color.rgba(255, 255, 255, random.randint(100, 150))
+    )
+    stars.append(star)
+Commit Message: "Generate terrain and sky elements including moon, stars, and block placement logic."
 
 
 
