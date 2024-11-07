@@ -1,5 +1,7 @@
 # 🎮 Minecraft Clone
 
+![Game Screenshot](./assets/readme/screenshot.png)
+
 A voxel-based world builder created with the Ursina engine, featuring dynamic terrain generation, interactive block manipulation, and atmospheric effects.
 
 ## ✨ Features
