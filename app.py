@@ -99,3 +99,59 @@ instruction_text = Text(
     scale=0.75,
     background=True
 )
+
+# Defining a boundary to prevent player from getting out of bounds
+boundary_thickness = 1
+boundary_height = 15
+terrain_size = 10
+
+# Left boundary
+left_wall = Entity(
+    position=(-terrain_size - boundary_thickness, 0, 0),
+    model="cube",
+    scale=(boundary_thickness + 2, boundary_height, terrain_size * 2),
+    color=color.clear,  # Makes it invisible
+    collider="box"
+)
+
+# Right boundary
+right_wall = Entity(
+    position=(terrain_size + boundary_thickness, 0, 0),
+    model="cube",
+    scale=(boundary_thickness + 2, boundary_height, terrain_size * 2),
+    color=color.clear,
+    collider="box"
+)
+
+# Front boundary
+front_wall = Entity(
+    position=(0, 0, terrain_size + boundary_thickness),
+    model="cube",
+    scale=(terrain_size * 2 + 2, boundary_height, boundary_thickness + 2),
+    color=color.clear,
+    collider="box"
+)
+
+# Back boundary
+back_wall = Entity(
+    position=(0, 0, -terrain_size - boundary_thickness),
+    model="cube",
+    scale=(terrain_size * 2 + 2, boundary_height, boundary_thickness + 1),
+    color=color.clear,
+    collider="box"
+)
+
+# Update function for dynamic effects
+def update():
+    global day_night_speed
+    mini_block.texture = block_textures.get(selected_block)
+    
+    moon.rotation_y += moon_rotation_speed
+    death_star.rotation_y += death_star_rotation_speed
+
+    time_of_day = (time.time() * day_night_speed) % 1
+    color_value = lerp(0.05, 0.8, time_of_day)
+    window.color = color.rgb(color_value, color_value, 1)
+
+# Run the application
+app.run()
