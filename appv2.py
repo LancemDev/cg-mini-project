@@ -72,7 +72,7 @@ for x in range(-10, 10):
 # Set player's position above the terrain at the center
 center_position = (0, 0)  # Adjust this to a nearby location if needed
 spawn_height = terrain_heights.get(center_position, 0) + 50  # Spawn a bit above the ground
-player.position = (center_position[0], spawn_height, center_position[1])
+player.position = (center_position[0], spawn_height+5, center_position[1])
 
 # Defining a boundary to prevent player from getting out of bounds
 boundary_thickness = 1
@@ -184,6 +184,17 @@ trench = Entity(
 
 death_star_rotation_speed = 0.5  # Slower rotation than the moon for subtlety
 
+# Variables for the up-and-down motion
+initial_height = 35             # Starting height (same as moon)
+lowest_height = -30              # Approximate height of the player
+movement_speed = 1             # Speed of the vertical movement
+time_offset = 0                 # Offset for the sine wave
+
+# Orbit variables for the circular motion
+orbit_radius = 15               # Radius of the circular orbit around the moon
+orbit_speed = 0.5               # Speed of rotation
+orbit_angle = 0                 # Initial angle
+
 # Input handling
 def input(key):
     global selected_block
@@ -224,14 +235,23 @@ instruction_text = Text(
 
 # Update function for dynamic effects
 def update():
-    global day_night_speed
+    global day_night_speed, time_offset,orbit_angle
     mini_block.texture = block_textures.get(selected_block)
+    time_offset += time.dt * movement_speed 
     
     # Rotate the moon
     moon.rotation_y += moon_rotation_speed
 
     # Rotate the Death Star
     death_star.rotation_y += death_star_rotation_speed
+    
+    death_star.y = initial_height + math.sin(time_offset) * (initial_height - lowest_height) / 2
+    
+    orbit_angle += orbit_speed * time.dt       # Increment orbit angle for circular movement
+    
+    # Circular orbit around the moon
+    death_star.x = moon.x + math.cos(orbit_angle) * orbit_radius
+    death_star.z = moon.z + math.sin(orbit_angle) * orbit_radius
 
     # Day-night cycle
     time_of_day = (time.time() * day_night_speed) % 1  # Oscillate between 0 and 1
