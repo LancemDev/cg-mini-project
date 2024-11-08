@@ -92,6 +92,9 @@ moon_glow = Entity(
 
 moon_rotation_speed = 0.1
 
+# Day-night cycle variables
+day_night_speed = 0.005
+
 # Stars in the sky
 stars = []
 for _ in range(50):
