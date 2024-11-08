@@ -140,7 +140,6 @@ back_wall = Entity(
     color=color.clear,
     collider="box"
 )
-
 # Update function for dynamic effects
 def update():
     global day_night_speed
@@ -155,3 +154,4 @@ def update():
 
 # Run the application
 app.run()
+
