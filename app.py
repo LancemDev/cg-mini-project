@@ -1,3 +1,55 @@
+from ursina import *
+from ursina.prefabs.first_person_controller import FirstPersonController
+from perlin_noise import PerlinNoise
+import random
+import time
+import math
+
+# Set up the game and Perlin noise for terrain generation
+app = Ursina()
+noise = PerlinNoise(octaves=3, seed=random.randint(1, 1000))
+
+window.size = (1280, 720)
+window.position = Vec2(350, 108)
+
+# Define game variables and textures
+selected_block = "grass"
+block_textures = {
+    "grass": load_texture("assets/textures/groundEarth.png"),
+    "dirt": load_texture("assets/textures/groundMud.png"),
+    "stone": load_texture("assets/textures/wallStone.png"),
+    "bedrock": load_texture("assets/textures/stone07.png")
+}
+
+# Define block class
+class Block(Entity):
+    def _init_(self, position, block_type):
+        super()._init_(
+            position=position,
+            model="assets/models/block_model",
+            scale=1,
+            origin_y=-0.5,
+            texture=block_textures.get(block_type),
+            collider="box"
+        )
+        self.block_type = block_type
+
+# Create block in hand
+mini_block = Entity(
+    parent=camera,
+    model="assets/models/block_model",
+    scale=0.2,
+    texture=block_textures.get(selected_block),
+    position=(0.35, -0.25, 0.5),
+    rotation=(-15, -30, -5)
+)
+
+# Initialize player
+player = FirstPersonController(
+    mouse_sensitivity=Vec2(100, 100),
+    position=(0, 50, 0)
+)
+
 # Create terrain
 min_height = -5
 terrain_heights = {}
