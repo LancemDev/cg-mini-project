@@ -119,6 +119,26 @@ def spawn_shooting_star():
 
 invoke(spawn_shooting_star, delay=random.uniform(0, 5))
 
+# Add Death Star
+death_star = Entity(
+    model="sphere",
+    scale=7,
+    position=(30, 35, -30),
+    color=color.rgba(0, 0, 0, .85)  # Darker gray for Death Star
+)
+death_star.rotation_y = 45  # Tilted for effect
+
+# Death Star trench (simulating the equatorial trench)
+trench = Entity(
+    parent=death_star,
+    model="cube",
+    scale=(1, 0.1, 1.1),  # Flattened along the y-axis for a trench effect
+    position=(0, 0, 0),
+    color=color.rgb(50, 50, 50)  # Darker color for trench contrast
+)
+
+death_star_rotation_speed = 0.5  # Slower rotation than the moon for subtlety
+
 # Input handling
 def input(key):
     global selected_block
@@ -192,6 +212,7 @@ back_wall = Entity(
     color=color.clear,
     collider="box"
 )
+
 # Update function for dynamic effects
 def update():
     global day_night_speed
